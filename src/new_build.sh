@@ -71,6 +71,12 @@ do_cleanup() {
     done
 
     umount "$TMP_DIR/merged"
+  else
+    cd "$source_dir"
+    echo ">> [$(date)] Removing $PWD/vendor" | tee -a "$DEBUG_LOG"
+    rm -rf vendor/* || true
+    echo ">> [$(date)] Removing $PWD/.repo/local_manifests/roomservice.xml" | tee -a "$DEBUG_LOG"
+    rm -f .repo/local_manifests/roomservice.xml
   fi
 
   if [ "$CLEAN_AFTER_BUILD" = true ]; then
@@ -83,10 +89,6 @@ do_cleanup() {
       cd "$source_dir"
       echo ">> [$(date)] Removing $PWD/out" | tee -a "$DEBUG_LOG"
       rm -rf out || true
-      echo ">> [$(date)] Removing $PWD/vendor" | tee -a "$DEBUG_LOG"
-      rm -rf vendor/* || true
-      echo ">> [$(date)] Removing $PWD/.repo/local_manifests/roomservice.xml" | tee -a "$DEBUG_LOG"
-      rm -f .repo/local_manifests/roomservice.xml
     fi
   fi
 }
